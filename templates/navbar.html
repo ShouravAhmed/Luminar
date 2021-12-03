@@ -22,8 +22,8 @@
 		<a href="{% url 'profiles' %}" class="btn">  Users  </a>
 
 		<a href="#" class="btn">  My Programs  </a>
-		<a href="#" class="btn">  Inbox  </a>
-		<a href="#" class="btn">  🔔 <span style="color:red;">({{ new_notification_count }})</span>  </a>
+		<a href="{% url 'inbox'%}" class="btn">  Inbox <span style="color:red;">({{ new_msg }})</span>  </a>
+		<a href="{% url 'notification' %}" class="btn">  🔔 <span style="color:red;">({{ new_notifi }})</span>  </a>
 
 		<a href="{% url 'user_profile' request.user.profile.id %}" class="btn" style="border-left: 100px solid white;"> {{ request.user.username }}  </a>
 		<a href="{% url 'logout' %}" class="btn">Logout</a>

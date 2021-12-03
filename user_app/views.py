@@ -11,10 +11,13 @@ from .models import Profile, Skill, Achivement, Project, Interest, Exprience
 from .forms import UserRegistrationForm, ProfileForm, SkillForm
 from .forms import ExprienceForm, AchivementForm, ProjectForm, InterestForm
 from .utils import search_profile, paginate_profile
-
+from inbox_app.utils import new_message, new_notification
 
 def dashboard(request):
-    context = {}
+    context = {
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/dashboard.html', context)
 
 
@@ -32,7 +35,9 @@ def profiles(request):
     context = {
         'profile_list': current_page_profile_list, 
         'custom_pagination_range': custom_pagination_range, 
-        'search_text':search_text
+        'search_text':search_text,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
     }
 
     return render(request, 'user_app/all_users.html', context)
@@ -55,7 +60,9 @@ def user_profile(request, pk):
         'achivements':achivements, 
         'projects': projects, 
         'interests':interests, 
-        # 'mentoring_programs':mentoring_programs
+        # 'mentoring_programs':mentoring_programs,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
     }
     return render(request, 'user_app/user_profile.html', context)
 
@@ -83,7 +90,10 @@ def login_user(request):
         else:
             messages.error(request, "Username or Password is Incorrect")
 
-    context = {}
+    context = {
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/login_register.html', context)
 
 @login_required(login_url='login')
@@ -111,15 +121,28 @@ def register_user(request):
             messages.success(request, "🎉🎉 Registration Successful 🎉🎉")
             return redirect('varify_account')
 
-    context = {'register':True, 'form':form}
+    context = {
+        'register':True, 
+        'form':form,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/login_register.html', context)
 
 def varify_account(request):
-    context = {'varify_account':True}
+    context = {
+        'varify_account':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/varify_account.html', context)
 
 def varify_account_success(request, pk):
-    context = {'varify_account_success':True}
+    context = {
+        'varify_account_success':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     try:
         profile = Profile.objects.get(id=pk)
         if profile:
@@ -150,7 +173,13 @@ def update_profile(request, pk):
             form.save()
             return redirect('user_profile', pk)
 
-    context = {'form': form, 'profile':profile, 'update':True}
+    context = {
+        'form': form, 
+        'profile':profile, 
+        'update':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/edit_profile.html', context)
 
 
@@ -172,7 +201,13 @@ def create_skill(request):
             messages.success(request, "Skill is Created Successfully")
             return redirect('user_profile', request.user.profile.id)
 
-    context = {'content': form, 'item_name':'Skill', 'create':True}
+    context = {
+        'content': form, 
+        'item_name':'Skill', 
+        'create':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 @login_required(login_url='login')
@@ -190,7 +225,13 @@ def update_skill(request, pk):
             form.save()
             return redirect('user_profile', skill.owner.id)
 
-    context = {'content': form, 'item_name':'Skill', 'update':True}
+    context = {
+        'content': form, 
+        'item_name':'Skill', 
+        'update':True,    
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 @login_required(login_url='login')
@@ -205,7 +246,13 @@ def delete_skill(request, pk):
         skill.delete()
         return redirect('user_profile', skill.owner.id)
 
-    context = {'content': skill, 'item_name':'Skill', 'delete':True}
+    context = {
+        'content': skill, 
+        'item_name':'Skill', 
+        'delete':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 
@@ -227,7 +274,13 @@ def create_exprience(request):
             messages.success(request, "Exprience is Created Successfully")
             return redirect('user_profile', request.user.profile.id)
 
-    context = {'content': form, 'item_name':'Exprience', 'create':True}
+    context = {
+        'content': form, 
+        'item_name':'Exprience', 
+        'create':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 @login_required(login_url='login')
@@ -245,7 +298,13 @@ def update_exprience(request, pk):
             form.save()
             return redirect('user_profile', exprience.owner.id)
 
-    context = {'content': form, 'item_name':'Exprience', 'update':True}
+    context = {
+        'content': form, 
+        'item_name':'Exprience', 
+        'update':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 @login_required(login_url='login')
@@ -260,7 +319,13 @@ def delete_exprience(request, pk):
         exprience.delete()
         return redirect('user_profile', exprience.owner.id)
 
-    context = {'content': exprience, 'item_name':'Exprience', 'delete':True}
+    context = {
+        'content': exprience, 
+        'item_name':'Exprience', 
+        'delete':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 
@@ -282,7 +347,13 @@ def create_achivement(request):
             messages.success(request, "Achivement is Created Successfully")
             return redirect('user_profile', request.user.profile.id)
 
-    context = {'content': form, 'item_name':'Achivement', 'create':True}
+    context = {
+        'content': form, 
+        'item_name':'Achivement', 
+        'create':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 @login_required(login_url='login')
@@ -300,7 +371,13 @@ def update_achivement(request, pk):
             form.save()
             return redirect('user_profile', achivement.owner.id)
 
-    context = {'content': form, 'item_name':'Achivement', 'update':True}
+    context = {
+        'content': form, 
+        'item_name':'Achivement', 
+        'update':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 @login_required(login_url='login')
@@ -315,7 +392,13 @@ def delete_achivement(request, pk):
         achivement.delete()
         return redirect('user_profile', achivement.owner.id)
 
-    context = {'content': achivement, 'item_name':'Achivement', 'delete':True}
+    context = {
+        'content': achivement, 
+        'item_name':'Achivement', 
+        'delete':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 
@@ -337,7 +420,13 @@ def create_project(request):
             messages.success(request, "Project is Created Successfully")
             return redirect('user_profile', request.user.profile.id)
 
-    context = {'content': form, 'item_name':'Project', 'create':True}
+    context = {
+        'content': form, 
+        'item_name':'Project', 
+        'create':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 @login_required(login_url='login')
@@ -355,7 +444,13 @@ def update_project(request, pk):
             form.save()
             return redirect('user_profile', project.owner.id)
 
-    context = {'content': form, 'item_name':'Project', 'update':True}
+    context = {
+        'content': form, 
+        'item_name':'Project', 
+        'update':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 @login_required(login_url='login')
@@ -370,7 +465,13 @@ def delete_project(request, pk):
         project.delete()
         return redirect('user_profile', project.owner.id)
 
-    context = {'content': project, 'item_name':'Project', 'delete':True}
+    context = {
+        'content': project, 
+        'item_name':'Project', 
+        'delete':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 
@@ -392,7 +493,13 @@ def create_interest(request):
             messages.success(request, "Interest is Created Successfully")
             return redirect('user_profile', request.user.profile.id)
 
-    context = {'content': form, 'item_name':'Interest', 'create':True}
+    context = {
+        'content': form, 
+        'item_name':'Interest', 
+        'create':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 @login_required(login_url='login')
@@ -410,7 +517,13 @@ def update_interest(request, pk):
             form.save()
             return redirect('user_profile', interest.owner.id)
 
-    context = {'content': form, 'item_name':'Interest', 'update':True}
+    context = {
+        'content': form, 
+        'item_name':'Interest', 
+        'update':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 @login_required(login_url='login')
@@ -425,7 +538,13 @@ def delete_interest(request, pk):
         interest.delete()
         return redirect('user_profile', interest.owner.id)
 
-    context = {'content': interest, 'item_name':'Interest', 'delete':True}
+    context = {
+        'content': interest, 
+        'item_name':'Interest', 
+        'delete':True,
+        'new_msg':new_message(request),
+        'new_notifi':new_notification(request),
+    }
     return render(request, 'user_app/user_data_form.html', context)
 
 

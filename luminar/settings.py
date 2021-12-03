@@ -58,6 +58,7 @@ INSTALLED_APPS = [
 
     # project apps
     'user_app.apps.UserAppConfig',
+    'inbox_app.apps.InboxAppConfig',
 ]
 
 
@@ -198,19 +199,12 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 # Email Backend
 # --------------------------------------------------
-# EMAIL_BACKEND = env.str('EMAIL_BACKEND')
-# EMAIL_HOST = env.str('EMAIL_HOST')
-# EMAIL_PORT = env.int('EMAIL_PORT')
-# EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
-# EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
-# --------------------------------------------------
-EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_HOST_USER='noreplay.luminar@gmail.com'
-EMAIL_HOST_PASSWORD='ShouravAhmed15898'
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
+EMAIL_BACKEND=env.str('EMAIL_BACKEND')
+EMAIL_HOST=env.str('EMAIL_HOST')
+EMAIL_PORT=env.int('EMAIL_PORT')
+EMAIL_USE_TLS=env.bool('EMAIL_USE_TLS')
+EMAIL_HOST_USER=env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=env.str('EMAIL_HOST_PASSWORD')
 # --------------------------------------------------
 
 

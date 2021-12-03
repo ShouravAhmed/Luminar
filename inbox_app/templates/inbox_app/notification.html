@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- load static -->
+{% load static %}
+
+<!-- bodyblock -->
+{% block bodyblock %}
+
+<!-- Main Section -->
+<main class="inbox my-xl">
+	<div class="content-box">
+        
+        <h1>Notifications</h1>
+		<h3 class="inbox__title" style="color:green">New Notification(<span style="color:orangered;">{{ new_notifi }}</span>)</h3>
+        <a href="{% url 'mark_all_read' %}" class="btn">Mark all as Read</a>
+        <br><br>
+
+        {% for notifi in notifi_list %}
+			<div style="padding:20px; background-color:lightseagreen; border-radius: 10px; margin-bottom: 20px;">
+                <a href="{% if notifi.redirect_url %} {{ notifi.redirect_url }} {% else %} # {% endif %}">
+                    <h3>{{ notifi.title }}</h3>
+                    <p>{{ notifi.description }}</p>
+                    <h6>{{ notifi.created_at }}</h6>
+                </a>
+            </div>
+        {% endfor %}
+	</div>
+</main>
+
+{% endblock %}

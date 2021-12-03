@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- load static -->
+{% load static %}
+
+<!-- bodyblock -->
+{% block bodyblock %}
+
+<!-- Main Section -->
+<main class="inbox my-xl">
+	<div class="content-box">
+		<h2 class="inbox__title">New Messages(<span>{{ new_msg }}</span>)</h2>
+		<ul class="messages">
+			{% for msg in msg_list %}
+			<li class="message {% if not msg.is_read %}message--unread{% endif %}">
+				{% if msg.sender == request.user.profile %}
+				<a href="{% url 'chatbox' msg.receiver.id %}">
+					<h3><span class="message__author">{{ msg.receiver.name }}</span></h3>
+					<span class="message__subject">{{ msg.body|linebreaksbr }} <span style="color: blueviolet">({{ msg.sender.name }})</span> </span>
+					<h5><span class="message__date">{{ msg.created_at }}</span></h5>
+				</a>
+				{% else %}
+				<a href="{% url 'chatbox' msg.sender.id %}">
+					<h3><span class="message__author">{{ msg.sender.name }}</span></h3>
+					<span class="message__subject">{{ msg.body|linebreaksbr }} <span style="color: blueviolet">({{ msg.sender.name }})</span></span>
+					<h5><span class="message__date">{{ msg.created_at }}</span></h5>
+				</a>
+				{% endif %}
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+</main>
+
+{% endblock %}

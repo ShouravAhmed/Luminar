@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- load static -->
+{% load static %}
+
+<!-- headblock -->
+{% block headblock %}
+<link rel="stylesheet" href="{% static 'styles/chatbox.css' %}" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+<!-- bodyblock -->
+{% block bodyblock %}
+
+<div class="container" style="width: 600px">
+	<div class="card" style="width: 600px">
+		<div style="background-color: #232f40">
+			<div class="container" style="padding-top: 20px; padding-bottom: 20px">
+				<a class="backButton" href="{% url 'inbox'%}"><i class="im im-angle-left"></i></a>
+				<a href="{% url 'user_profile' receiver.id %}"><h2 class="dev__name" style="color: white">{{ receiver.name }}</h2></a>
+			</div>
+		</div>
+		<div class="container" style="width: 600px">
+		<div class="card" style="width: 600px">
+			<div class="messaging" style="width: 600px">
+				<div class="inbox_msg" style="width: 600px">
+					<div class="mesgs" style="width: 600px">
+						<div class="msg_history" style="width: 600px">
+							
+							{% for msg in text_messages %}
+							{% if msg.sender == receiver %}
+							<div class="incoming_msg" style="width:300px">
+								<div class="incoming_msg_img">
+									<img src="{{ receiver.profile_picture.url }}" alt="{{receiver.username}}" />
+								</div>
+								<div class="received_msg" style="width:300px"><div class="received_withd_msg"  style="width:300px"><p>{{ msg.body }}</p>
+										<span class="time_date">{{msg.created_at}}</span>
+									</div>
+								</div>
+							</div>
+							{% else %}
+							<div class="outgoing_msg"  style="width: 300px;">
+								<div class="sent_msg"  style="width: 300px;">
+									<p>{{ msg.body }}</p>
+										<span class="time_date">{{msg.created_at}}</span>
+								</div>
+							</div>
+							{% endif %}
+							{% endfor %}
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="container">
+		<div class="card card--dark">
+		<div class="hero-section__search">
+			<form class="form" method="post">
+				{% csrf_token %}
+				<div class="form__field" style="width:70%">
+					<textarea class="input input--textarea" name="message" placeholder="Type your message..."></textarea>
+				</div>
+
+				<input class="btn btn--main--outline material-icons btn--lg" type="submit" value="&#xe163" />
+			</form>
+		</div>
+		</div>
+		</div>
+	</div>
+</div>
+<br /><br /><br /><br /><br /><br />
+{% endblock %}

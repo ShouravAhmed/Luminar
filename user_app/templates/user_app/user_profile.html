@@ -12,7 +12,7 @@
 <main>
 	<br>
 	{% if request.user.is_authenticated and request.user.id != profile.user.id %}
-	<h3><a href="#" class="btn">Send Message </a></h3>
+	<h3><a href="{% url 'chatbox' profile.id %}" class="btn">Send Message </a></h3>
 	{% endif %}
 	<br>
 

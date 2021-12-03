@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import text_message, Notification
 
-# Register your models here.
+
+admin.site.register(text_message)
+admin.site.register(Notification)
+
