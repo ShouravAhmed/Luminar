@@ -91,8 +91,6 @@ def login_user(request):
             messages.error(request, "Username or Password is Incorrect")
 
     context = {
-        'new_msg':new_message(request),
-        'new_notifi':new_notification(request),
     }
     return render(request, 'user_app/login_register.html', context)
 
