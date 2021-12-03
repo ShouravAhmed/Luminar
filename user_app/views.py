@@ -15,9 +15,12 @@ from inbox_app.utils import new_message, new_notification
 
 def dashboard(request):
     context = {
-        'new_msg':new_message(request),
-        'new_notifi':new_notification(request),
+        
     }
+    if request.user.is_authenticated:
+        context['new_msg'] = new_message(request)
+        context['new_notifi'] = new_notification(request)
+
     return render(request, 'user_app/dashboard.html', context)
 
 
