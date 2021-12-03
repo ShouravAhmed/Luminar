@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- load static -->
+{% load static %}
+
+<!-- ============================================================= -->
+<!-- ================= Varify account mail sent ================== -->
+<!-- ============================================================= -->
+
+<!-- all body data -->
+{% block bodyblock %}
+
+{% if varify_account %}
+<div>
+	<div>
+
+		<h3>Account Verification</h3>
+		<br />
+		<p>We’ve sent you an email with a account varification link. Please check your email and varify your account before login. This varification email will be expired after 24 hour.</p>
+	</div>
+
+	<br /> <br>
+	<div>
+		<div>
+			<p>Don’t have an Account?</p>
+			<a href="{% url 'register' %}">Sign Up</a>
+		</div>
+		<div>
+			<br>
+			<a href="{% url 'login' %}">Login</a>
+		</div>
+	</div>
+</div>
+
+{% else %}
+
+<div>
+	<div>
+		<div>
+			{% if not_valid %}
+
+			<h3>Invalid Verification</h3>
+			<br />
+			<p>Your account varification link is invalid or expired.</p>
+
+			{% elif verified %}
+
+			<h3>Already Verified</h3>
+			<br />
+			<p>Your account is already varified, please login.</p>
+
+			{% else %}
+
+			<h3>Verification Successfull</h3>
+			<br />
+			<p>Your account is successfully varified.</p>
+
+			{% endif %}
+		</div>
+
+		<br /><br />
+
+		<div>
+			<div>
+				<p>Don’t have an Account?</p>
+				<a href="{% url 'register' %}">Sign Up</a>
+			</div>
+			<div>
+				<br>
+				<a href="{% url 'login' %}">Login</a>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
+
+{% endblock %}

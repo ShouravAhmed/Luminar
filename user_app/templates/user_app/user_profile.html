@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- load static -->
+{% load static %}
+
+<!-- all body data -->
+{% block bodyblock %}
+<br /><br />
+
+<!-- Main Section -->
+<main>
+	<br>
+	{% if request.user.is_authenticated and request.user.id != profile.user.id %}
+	<h3><a href="#" class="btn">Send Message </a></h3>
+	{% endif %}
+	<br>
+
+	
+	<div style="background-color:mediumpurple; padding: 20px; width:500px;">
+		<div style="color: white">
+			<h1>User Profile</h1>
+			{% if request.user.id == profile.user.id %}
+				<a href="{% url 'update_profile' profile.id %}" style="padding-left:5px; padding-right: 5px; border-radius: 10px; background:green; color:white;">Update Profiles</a>
+				<br> <br>
+			{% endif %}
+			<div>
+				<img src="{{ profile.profile_picture.url }}" alt="image" style="height:300px; width:300px;" />
+				<div>
+					<h3>{{ profile.name }}</h3>
+					<h5>{{ profile.intro|slice:"60" }}</h5>
+					<h5>{{ profile.email }}</h5>
+					<h5>{{ profile.location }}</h5>
+				</div>
+			</div>
+			<p>{{ profile.bio|slice:"250" }}</p>
+
+			<a href="{{ profile.linkedin_profile }}">LinkedIn</a>
+			<a href="{{ profile.github_profile }}">Github</a>
+			<a href="{{ profile.facebook_profile }}">Facebook</a>
+			<a href="{{ profile.portfolio_website }}">Portfolio</a>
+		</div>
+	</div>
+	
+	<div style="background-color:mediumpurple; padding: 20px; color:white; border: 10px solid white; border-radius: 10px;">
+		<h2>Expriences</h2>
+		{% if request.user.id == profile.user.id %}
+			<a href="{% url 'create_exprience' %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:green; color:white;">Add Expriences</a>
+		{% endif %}
+		<ul>
+		{% for exp in expriences%}
+			<li>
+				<h3>{{ exp.role }}</h3>
+				<h4>{{ exp.organization }}</h4>
+				<p>{{ exp.description }}</p>
+			</li>
+			{% if request.user.id == profile.user.id %}
+				<a href="{% url 'update_exprience' exp.id %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:green; color:white;">Update</a>
+			{% endif %}
+			{% if request.user.id == profile.user.id %}
+				<a href="{% url 'delete_exprience' exp.id %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:mediumvioletred; color:white;">delete</a>
+			{% endif %}
+		{% endfor %}
+	</div>
+
+	<div style="background-color:mediumpurple; padding: 20px; color:white; border: 10px solid white; border-radius: 10px;">
+		<h2>Skills</h2>
+		{% if request.user.id == profile.user.id %}
+			<a href="{% url 'create_skill' %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:green; color:white;">Add Skills</a>
+		{% endif %}
+		<ul>
+		{% for skill in skills%}
+			<li>
+				<h3>{{ skill.title }}</h3>
+				<p>{{ skill.description }}</p>
+			</li>
+			{% if request.user.id == profile.user.id %}
+				<a href="{% url 'update_skill' skill.id %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:green; color:white;">Update</a>
+			{% endif %}
+			{% if request.user.id == profile.user.id %}
+				<a href="{% url 'delete_skill' skill.id %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:mediumvioletred; color:white;">delete</a>
+			{% endif %}
+		{% endfor %}
+	</div>
+
+	<div style="background-color:mediumpurple; padding: 20px; color:white; border: 10px solid white; border-radius: 10px;">
+		<h2>Achivements</h2>
+		{% if request.user.id == profile.user.id %}
+			<a href="{% url 'create_achivement' %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:green; color:white;">Add Achivements</a>
+		{% endif %}
+		<ul>
+		{% for achivement in achivements%}
+			<li>
+				<h3>{{ achivement.title }}</h3>
+				<p>{{ achivement.description }}</p>
+			</li>
+			{% if request.user.id == profile.user.id %}
+				<a href="{% url 'update_achivement' achivement.id %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:green; color:white;">Update</a>
+			{% endif %}
+			{% if request.user.id == profile.user.id %}
+				<a href="{% url 'delete_achivement' achivement.id %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:mediumvioletred; color:white;">delete</a>
+			{% endif %}
+		{% endfor %}
+	</div>
+
+	<div style="background-color:mediumpurple; padding: 20px; color:white; border: 10px solid white; border-radius: 10px;">
+		<h2>Projects</h2>
+		{% if request.user.id == profile.user.id %}
+			<a href="{% url 'create_project' %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:green; color:white;">Add Projects</a>
+		{% endif %}
+		<ul>
+		{% for project in projects%}
+			<li>
+				<h3>{{ project.title }}</h3>
+				<p>{{ project.description }}</p>
+			</li>
+			{% if request.user.id == profile.user.id %}
+				<a href="{% url 'update_project' project.id %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:green; color:white;">Update</a>
+			{% endif %}
+			{% if request.user.id == profile.user.id %}
+				<a href="{% url 'delete_project' project.id %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:mediumvioletred; color:white;">delete</a>
+			{% endif %}
+		{% endfor %}
+	</div>
+
+	<div style="background-color:mediumpurple; padding: 20px; color:white; border: 10px solid white; border-radius: 10px;">
+		<h2>Interests</h2>
+		{% if request.user.id == profile.user.id %}
+			<a href="{% url 'create_interest' %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:green; color:white;">Add Interests</a>
+		{% endif %}
+		<ul>
+		{% for interest in interests%}
+			<li>
+				<h3>{{ interest.title }}</h3>
+				<p>{{ interest.description }}</p>
+			</li>
+			{% if request.user.id == profile.user.id %}
+				<a href="{% url 'update_interest' interest.id %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:green; color:white;">Update</a>
+			{% endif %}
+			{% if request.user.id == profile.user.id %}
+				<a href="{% url 'delete_interest' interest.id %}" style="padding-left:5px; padding-right: 5px; border-radius:10px; background:mediumvioletred; color:white;">delete</a>
+			{% endif %}
+		{% endfor %}
+	</div>
+</main>
+
+{% endblock %}

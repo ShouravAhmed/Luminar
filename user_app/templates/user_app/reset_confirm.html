@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- load static -->
+{% load static %}
+
+<!-- all body data -->
+{% block bodyblock %}
+<br /><br /><br />
+
+<div>
+	{% if form %}
+	<div>
+		<h3>Enter new password</h3>
+		<p>Please enter your new password twice so we can verify you typed it in correctly.</p>
+	</div>
+
+	<form method="POST">
+		{% csrf_token %}
+
+		<!-- form -->
+		{% for field in form %}
+		<div>
+			<label for="formInput#text">{{field.label}}: </label>
+			{{field}}
+
+			<!-- help texts -->
+			<!-- {% if field.help_text %}
+			<p style="color: red; font-size: 0.8em">{{ field.help_text }}</p>
+			{% endif %} -->
+
+			<!-- error messages -->
+			{% for error in field.errors %}
+			<p style="color: red; font-size: 0.8em">{{ error }}</p>
+			{% endfor %}
+		</div>
+		{% endfor %}
+
+		<br>
+		<div>
+			<input type="submit" value="Change Password" />
+		</div>
+	</form>
+
+	{% else %}
+	<div>
+
+		<h3>Password reset unsuccessful</h3>
+		<p>The password reset link was invalid, possibly because it has already been used. Please request a new password reset.</p>
+	</div>
+
+	<br /><br />
+
+	<div>
+		<div>
+			<p>Don’t have an Account?</p>
+			<a href="{% url 'register' %}">Sign Up</a>
+			<br>
+		</div>
+		<div>
+			<br>
+			<a href="{% url 'login' %}">Login</a>
+		</div>
+	</div>
+	{% endif %}
+</div>
+
+{% endblock %}

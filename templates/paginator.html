@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% load static %}
+
+<style>
+	.pg_btn{
+		padding:10px; 
+		background-color: lightcoral; 
+		border-radius: 5px;
+		margin-left: 10px;
+		margin-right: 10px;
+		text-align: center;
+		font-size: 1em;
+		width:35px;
+		height:35px;
+	}
+</style>
+
+<div
+		<!-- previous -->
+		{% if item_list.has_previous %}
+		<div class="pg_btn">
+			<a href="?search_text={{ search_text }}&page={{ item_list.previous_page_number }}"> <h4> &#10094; Prev </h4> </a>
+		</div>
+		{% endif %}
+
+		<!-- pages -->
+		{% for page in custom_pagination_range %}
+			{% if item_list.number == page %}
+			<div class="pg_btn" style="background-color: greenyellow;">
+				<a href="?{% if search_text != '' %}search_text={{ search_text }}&{% endif %}page={{ page }}" style="background-color:lightgreen"><h4>{{ page | stringformat:"02d" }}</h4></a>
+			</div>
+			{% else %}
+			<div class="pg_btn">
+				<a href="?{% if search_text != '' %}search_text={{ search_text }}&{% endif %}page={{ page }}"><h4>{{ page | stringformat:"02d" }}</h4></a>
+			</div>
+			{% endif %}
+		{% endfor %}
+
+		<!-- next -->
+		{% if item_list.has_next %}
+		<div class="pg_btn">
+			<a href="?search_text={{ search_text }}&page={{ item_list.next_page_number }}"><h4>Next &#10095;</h4></a>
+		</div>
+		{% endif %}
+</div>

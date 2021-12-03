@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- load static -->
+{% load static %}
+
+<!-- all body data -->
+{% block bodyblock %}
+<br /><br />
+<div>
+	<div>
+		<div>
+			{% if register %}
+
+			<h3>Account SignUp</h3>
+			<p>Create a new account</p>
+
+			{% else %}
+
+			<h3>Account Login</h3>
+			<p>Hello Dude, Welcome Back!</p>
+
+			{% endif %}
+		</div>
+
+		{% if register %}
+
+		<form action="{% url 'register' %}" method="POST">
+			{% csrf_token %}
+
+			<!-- form -->
+			{% for field in form %}
+			<div>
+				<label for="formInput#text">{{field.label}}: </label>
+				{{ field }}
+
+				<!-- help texts -->
+				<!-- {% if field.help_text %}
+				<p style="color: red; font-size: 0.8em">{{ field.help_text }}</p>
+				{% endif %} -->
+
+				<!-- error messages -->
+				{% for error in field.errors %}
+				<p style="color: red; font-size: 0.8em">{{ error }}</p>
+				{% endfor %}
+			</div>
+			{% endfor %}
+
+			<div>
+				<input type="submit" value="Sign Up" />
+			</div>
+		</form>
+		{% else %}
+
+		<form action="{% url 'login' %}" method="POST">
+			{% csrf_token %}
+
+			<!-- Input:Username -->
+			<div>
+				<label for="formInput#text">Username</label>
+				<input id="formInput#text" type="text" name="username" placeholder="Enter your username..." />
+			</div>
+
+			<!-- Input:Password -->
+			<div>
+				<label for="formInput#password">Password: </label>
+				<input id="formInput#passowrd" type="password" name="password" placeholder="password" />
+			</div>
+
+			<div>
+				<input type="submit" value="Log In" />
+				<br>
+				<a href="{% url 'reset_password' %}">Forget Password?</a>
+			</div>
+		</form>
+
+		{% endif %}
+
+		<div>
+			{% if register %}
+			<p>Already have an Account?</p>
+			<a href="{% url 'login' %}">Log In</a>
+			{% else %}
+			<p>Don’t have an Account?</p>
+			<a href="{% url 'register' %}">Sign Up</a>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

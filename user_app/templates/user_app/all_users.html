@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- load static -->
+{% load static %}
+
+<!-- all body data -->
+{% block bodyblock %}
+
+<br /><br />
+	<div style="padding:20px">
+		<h1>All Users</h1> <br>
+
+		<div style="background-color:navy; padding: 20px; color: white;">
+			<form action="{% url 'profiles' %}" method="get">
+				<div>
+					<label for="formInput#search" style="font-size:1.2em">Search a User: </label>
+					<input style="width: 50%; height:25px; text-align:center;" id="formInput#search" type="text" name="search_text" placeholder="Search by Users name, skill, exprience, etc." value="{{ search_text }}" />
+				</div>
+				<br>
+				<input type="submit" value="Search" class="btn" />
+			</form>
+		</div>
+		
+		<br><br>
+
+		{% for profile in profile_list %}
+		<div style="background-color:mediumpurple; padding: 20px; width:500px; margin-bottom: 10px;">
+			<a href="{% url 'user_profile' profile.id %}" style="color: white;">
+				<div>
+					<img src="{{ profile.profile_picture.url }}" alt="image" style="height:300px; width:300px;" />
+					<div>
+						<h3>{{ profile.name }}</h3>
+						<h5>{{ profile.intro|slice:"60" }}</h5>
+						<h5>{{ profile.email }}</h5>
+						<h5>{{ profile.location }}</h5>
+					</div>
+				</div>
+				<p>{{ profile.bio|slice:"250" }}</p>
+
+				<a href="{{ profile.linkedin_profile }}">LinkedIn</a>
+				<a href="{{ profile.github_profile }}">Github</a>
+				<a href="{{ profile.facebook_profile }}">Facebook</a>
+				<a href="{{ profile.portfolio_website }}">Portfolio</a>
+
+				<!-- <div>
+					<h4>Skills</h4>
+					{% for skill in profile.skill_set.all %}
+					<span>
+						<small>{{ skill.title }}</small>
+					</span>
+					{% endfor %}
+				</div> -->
+			</a>
+		</div>
+		{% endfor %}
+
+		<br><br>
+
+		{% if profile_list|length > 0 %} {% include 'paginator.html' with item_list=profile_list %} {% endif %}
+	</div>
+
+{% endblock %}

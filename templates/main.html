@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>Luminal - mentor matching platform</title>
+	</head>
+
+	<body>
+		{% include 'navbar.html' %}
+
+		<!-- alert message -->
+		{% if messages %}
+
+		<div style="text-align: center">
+			{% for message in messages %}
+			<div style="border:5px solid lightcoral;">
+				<p>{{ message }}</p>
+			</div>
+			{% endfor %}
+		</div>
+
+		{% endif %}
+
+		<div class="bodyblock">
+			{% block bodyblock %}
+			<!-- this is base -->
+			{% endblock %}
+		</div>
+	</body>
+	
+<!-- <script src="{% static 'js/app.js' %}"></script> -->
+</html>
