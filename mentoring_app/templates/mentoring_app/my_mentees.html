@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- load static -->
+{% load static %}
+
+<!-- headblock -->
+{% block headblock %}
+<link rel="stylesheet" href="{% static 'styles/chatbox.css' %}" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+<!-- bodyblock -->
+{% block bodyblock %}
+
+<div style="padding:20px">
+    <h1>Your Mentees</h1>
+    {% for mentee in mentees %}
+    <a href="{% url 'my_mentees' program.id mentee.id %}" style="color:white; background: skyblue; width:30%;" class="btn">{{ mentee.name }}</a>
+    <br><br><br>
+    {% endfor %}
+</div>
+
+<div style="padding:20px">
+	<h1>Assigned Tasks for "{{ active_mentee.name }}"</h1>
+	{% for task in tasks %}
+	<div style="background-color:lightcyan; padding: 20px; margin-bottom: 10px;">
+		<h2>{{ task.title }}</h2>
+		<p>{{ task.description }}</p>
+		<p>{{ task.deadline }}</p>
+		{% if task.is_done and not task.is_evaluated %}
+		<p style="color:white; background: lightseagreen; width:30%;" class="btn">Mark as completed</p>
+		{% elif not task.is_done %}
+		<p style="color:white; background: lightseagreen; width:30%;" class="btn">Not completed yet</p>
+        {% else %}
+        <p style="color:white; background: lightseagreen; width:30%;" class="btn">Completed</p>
+		{% endif %}		
+	</div>
+	{% endfor %}
+    {% if not tasks %}
+    <p>no tasks are assigned yet</p>
+    {% endif %}
+
+    <form class="form" method="post">
+        {% csrf_token %}
+        <div class="form__field" style="width:70%">
+            <label for="task_title">Title:</label><br>
+            <input type="text" id="task_title" name="task_title"><br>
+            <label for="task_description">Description:</label><br>
+            <textarea name="task_description" id="task_description"></textarea>
+            <label for="task_deadline">Deadline:</label>
+            <input type="date" id="task_deadline" name="task_deadline">
+        </div>
+
+        <input class="btn btn--main--outline material-icons btn--lg" type="submit" value="&#xe163" />
+    </form>
+
+</div>
+<div class="container" style="width: 600px">
+	<div class="card" style="width: 600px">
+		<div class="container" style="width: 600px">
+		<div class="card" style="width: 600px">
+			<div class="messaging" style="width: 600px">
+				<div class="inbox_msg" style="width: 600px">
+					<div class="mesgs" style="width: 600px">
+						<div class="msg_history" style="width: 600px">
+							
+							{% for msg in text_messages %}
+							{% if msg.mmchat_sender == receiver %}
+							<div class="incoming_msg" style="width:300px">
+								<div class="incoming_msg_img">
+									<img src="{{ receiver.profile_picture.url }}" alt="{{receiver.username}}" />
+								</div>
+								<div class="received_msg" style="width:300px"><div class="received_withd_msg"  style="width:300px"><p>{{ msg.body }}</p>
+										<span class="time_date">{{msg.created_at}}</span>
+									</div>
+								</div>
+							</div>
+							{% else %}
+							<div class="outgoing_msg"  style="width: 300px;">
+								<div class="sent_msg"  style="width: 300px;">
+									<p>{{ msg.body }}</p>
+										<span class="time_date">{{msg.created_at}}</span>
+								</div>
+							</div>
+							{% endif %}
+							{% endfor %}
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+		<div class="container">
+		<div class="card card--dark">
+		<div class="hero-section__search">
+			<form class="form" method="post">
+				{% csrf_token %}
+				<div class="form__field" style="width:70%">
+					<textarea class="input input--textarea" name="message" placeholder="Type your message..."></textarea>
+				</div>
+
+				<input class="btn btn--main--outline material-icons btn--lg" type="submit" value="&#xe163" />
+			</form>
+		</div>
+		</div>
+		</div>
+	</div>
+</div>
+<br /><br /><br /><br /><br /><br />
+{% endblock %}

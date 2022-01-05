@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- all body data -->
+{% block bodyblock %}
+
+<!-- Main Section -->
+
+{% if approved_requests_page %}
+<div style="padding:20px">
+    <h1 style="font-size: 2em;"> <a href="{% url 'mentoring_program' program.id %}">{{ program.title }}</a></h1>
+    <br><br>
+    <h2>Approved Requests:</h2>
+    
+    {% if approved_requests %}
+    {% for approved_request in approved_requests %}
+    <div style="background-color:lightcyan; padding: 20px; margin-bottom: 10px;">
+        <h2>{{ approved_request.user_profile.name }}</h2>
+        <p>{{ approved_request.user_profile.intro }}</p>
+        <p>{{ approved_request.user_profile.email }}</p>
+        <a href="{% url 'review_user_enroll' approved_request.id %}" style="color:white; background: lightseagreen; width:30%;" class="btn">Review</a>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>There is no request approved yet.</p>
+    {% endif %}
+</div>
+{% else %}
+<div style="padding:20px">
+    <h1 style="font-size: 2em;"> <a href="{% url 'mentoring_program' program.id %}">{{ program.title }}</a></h1>
+    <br><br>
+
+    <a href="{% url 'approved_request' program.id %}" style="color:white; background: lightseagreen; width:30%;" class="btn">Approved Requests</a>
+
+    <h2>Enroll Requests:</h2>
+    
+    {% if enroll_requests %}
+        {% for enroll_request in enroll_requests %}
+        <div style="background-color:lightcyan; padding: 20px; margin-bottom: 10px;">
+            <h2>{{ enroll_request.user_profile.name }}</h2>
+            <p>{{ enroll_request.user_profile.intro }}</p>
+            <p>{{ enroll_request.user_profile.email }}</p>
+            <a href="{% url 'review_user_enroll' enroll_request.id %}" style="color:white; background: lightseagreen; width:30%;" class="btn">Review</a>
+        </div>
+        {% endfor %}
+    {% else %}
+    <p>There is no enroll request now.</p>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

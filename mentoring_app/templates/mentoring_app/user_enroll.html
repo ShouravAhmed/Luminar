@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- all body data -->
+{% block bodyblock %}
+
+<!-- Main Section -->
+
+<div style="padding:20px">
+    <h1 style="font-size: 2em;"> <a href="{% url 'mentoring_program' program.id %}"> {{ program.title }} </a></h1>
+    <br><br>
+    <h1>Your Responses for the Featured Questions</h1>
+    <br>
+    
+    {% for response in all_response %}
+    <div style="background-color:lightcyan; padding: 20px; margin-bottom: 10px;">
+        <h2>{{ response.feature.title }}</h2>
+        <p>{{ response.feature.description }}</p>
+        <br>
+        <p> <span style="color:lightseagreen; font-style: underline;">Response:</span> {{ response.description }} </p>
+        <p> <span style="color:lightseagreen; font-style: underline;">Exprience Level:</span> {{ response.exp_level }} </p>
+        <br>
+        <a href="{% url 'update_response' program.id response.id %}" style="color:white; background: lightseagreen; width:30%;" class="btn">Update</a>
+    </div>
+    {% endfor %}
+</div>
+
+{% if next_question %}
+<div style="background-color:rgb(231, 224, 255); padding: 20px; margin-bottom: 10px;">
+    <h2>{{ next_question.title }}</h2>
+    <p>{{ next_question.description }}</p>
+    <br><br>
+    
+    <form class="form" method="POST">
+        {% csrf_token %} 
+        {% for field in content %}
+        <!-- Input:Text -->
+        <div>
+            <label for="formInput#text">{{field.label}}: </label>
+            {{field}}
+            <br>
+        </div>
+        {% endfor %}
+
+        <input class="btn" type="submit" value="Next" />
+    </form>
+
+</div>
+{% endif %}
+
+{% if not program.is_program_started %}
+{% if all_question_answered %}
+<div style="padding-left: 20px; margin-bottom: 30px;">
+    {% if enroll.is_approved %}
+    <p style="color:white; background: greenyellow; width:30%;" class="btn">Your request for enroll in the program has been approved! Please wait for the program to start.</p>
+    {% elif enroll.is_submited %}
+    <p style="color:black; background: gold; width:30%;" class="btn">Your request for enroll in the program is submitted for a review. Please wait.</p>    
+    {% else %}
+    <a href="{% url 'submit_for_review' program.id %}" style="color:white; background: hotpink; width:30%;" class="btn">Submit for review</a>    
+    {% endif %}
+</div>
+{% endif %}
+{% endif %}
+
+
+{% endblock %}

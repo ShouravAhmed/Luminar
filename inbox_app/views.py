@@ -22,7 +22,7 @@ def chatbox(request, pk):
             receiver = receiver
         )
         msg.save()
-        redirect('chatbox', pk)
+        return redirect('chatbox', pk)
 
     context = {
         'text_messages':text_messages, 

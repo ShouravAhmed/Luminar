@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     # project apps
     'user_app.apps.UserAppConfig',
     'inbox_app.apps.InboxAppConfig',
+    'mentoring_app.apps.MentoringAppConfig',
 ]
 
 

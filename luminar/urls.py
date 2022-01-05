@@ -25,6 +25,7 @@ urlpatterns = [
 
     path('', include('user_app.urls')),
     path('', include('inbox_app.urls')),
+    path('', include('mentoring_app.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- all body data -->
+{% block bodyblock %}
+
+<!-- Main Section -->
+
+	<div>
+		<div>
+			<br> <br>
+			<h3>{% if create %}Create{% elif update%}Update{% else %}Delete{% endif %} {{ item_name }}</h3>
+			<br>
+
+            {% if delete %}
+            <form class="form" method="POST">
+				{% csrf_token %}
+				<p>Are your sure you want to delete "<span style="color:red">{{content.title}}</span>" ?</p>
+				<a class="btn" href="{% url 'mentoring_program' content.id %}">&#x2190 Go Back</a>
+				<input class="btn" style="background-color:orangered" type="submit" value="Delete" />
+			</form>
+            {% else %}
+			<form class="form" method="POST" enctype="multipart/form-data">
+				{% csrf_token %} 
+                {% for field in content %}
+				<!-- Input:Text -->
+				<div>
+					<label for="formInput#text">{{field.label}}: </label>
+					{{field}}
+                    <br>
+				</div>
+				{% endfor %}
+
+				<input class="btn" type="submit" value="{% if create %}Create{% else %}Update{% endif %}" />
+			</form>
+            {% endif %}
+		</div>
+	</div>
+
+
+{% endblock %}

@@ -8,21 +8,29 @@
 {% block bodyblock %}
 <br /><br />
     <div style="padding:20px">
-        <h1>Dashboard</h1>
-
+        <a href="{% url 'create_program' request.user.profile.id %}" style="color:white; background: blueviolet; width:30%;" class="btn">Create New Program</a>
+		<a href="{% url 'archived_program' %}" style="color:white; background: blueviolet; width:30%;" class="btn">Archived Programs</a>
         <br><br>
-        {% for program in programs %}
+        <h1>My Programs</h1>
+        <br>
+        
+        {% for program in myprograms %}
 		<div style="background-color:mediumpurple; padding: 20px; width:500px; margin-bottom: 10px;">
 			<a href="{% url 'mentoring_program' program.id %}" style="color: white;">
 				<div>
 					<img src="{{ program.cover_picture.url }}" alt="image" style="height:300px; width:300px;" />
 					<div>
 						<h3>{{ program.title }}</h3>
-						<h5>{{ program.description|slice:"120" }}</h5>
+						<h5>{{ program.description|slice:"220" }}</h5>
 					</div>
 				</div>
 			</a>
 		</div>
 		{% endfor %}
+
+		{% if not myprograms %}
+		<p>You dont have any program yet.</p>
+		{% endif %}
+
     </div>
 {% endblock %}

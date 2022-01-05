@@ -13,9 +13,12 @@ from .forms import ExprienceForm, AchivementForm, ProjectForm, InterestForm
 from .utils import search_profile, paginate_profile
 from inbox_app.utils import new_message, new_notification
 
+from mentoring_app.models import MentoringProgram
+
 def dashboard(request):
+    program_list = MentoringProgram.objects.filter(is_published=True, is_archived=False)
     context = {
-        
+        'programs':program_list,
     }
     if request.user.is_authenticated:
         context['new_msg'] = new_message(request)
@@ -125,24 +128,18 @@ def register_user(request):
     context = {
         'register':True, 
         'form':form,
-        'new_msg':new_message(request),
-        'new_notifi':new_notification(request),
     }
     return render(request, 'user_app/login_register.html', context)
 
 def varify_account(request):
     context = {
         'varify_account':True,
-        'new_msg':new_message(request),
-        'new_notifi':new_notification(request),
     }
     return render(request, 'user_app/varify_account.html', context)
 
 def varify_account_success(request, pk):
     context = {
         'varify_account_success':True,
-        'new_msg':new_message(request),
-        'new_notifi':new_notification(request),
     }
     try:
         profile = Profile.objects.get(id=pk)

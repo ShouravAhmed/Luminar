@@ -21,7 +21,7 @@
 		{% if request.user.is_authenticated %}
 		<a href="{% url 'profiles' %}" class="btn">  Users  </a>
 
-		<a href="#" class="btn">  My Programs  </a>
+		<a href="{% url 'myprograms' %}" class="btn">  My Programs  </a>
 		<a href="{% url 'inbox'%}" class="btn">  Inbox <span style="color:red;">({{ new_msg }})</span>  </a>
 		<a href="{% url 'notification' %}" class="btn">  🔔 <span style="color:red;">({{ new_notifi }})</span>  </a>
 

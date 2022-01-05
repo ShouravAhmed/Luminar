@@ -8,10 +8,12 @@
 {% block bodyblock %}
 <br /><br />
     <div style="padding:20px">
-        <h1>Dashboard</h1>
-
+        
         <br><br>
-        {% for program in programs %}
+        <h1>Archived Programs</h1>
+        <br>
+        
+        {% for program in myprograms %}
 		<div style="background-color:mediumpurple; padding: 20px; width:500px; margin-bottom: 10px;">
 			<a href="{% url 'mentoring_program' program.id %}" style="color: white;">
 				<div>
@@ -24,5 +26,10 @@
 			</a>
 		</div>
 		{% endfor %}
+
+		{% if not myprograms %}
+		<p>No Archived Program found.</p>
+		{% endif %}
+
     </div>
 {% endblock %}

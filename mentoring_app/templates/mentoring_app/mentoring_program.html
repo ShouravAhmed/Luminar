@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- load static -->
+{% load static %}
+
+<!-- all body data -->
+{% block bodyblock %}
+<br /><br />
+    <div style="padding:20px">
+        <br><br>
+        <img src="{{ program.cover_picture.url }}" alt="image" style="height:300px;" />
+        <br>
+        <h1>{{ program.title }}</h1>
+        <p>{{ program.description }}</p>
+        
+        {% if program.is_enroll_on and not program.is_program_started and not program.is_archived %}
+        {% if request.user.profile.id == program.admin.id or request.user.profile in moderators %}
+            <br>
+            <a href="{% url 'review_enroll' program.id %}" style="color:white; background: hotpink; width:30%;" class="btn">
+                Review Enroll Requests (new:{{ new_enroll_request }})
+            </a>
+        {% endif %}
+        {% endif %}
+
+        {% if not program.is_archived and request.user.profile.id == program.admin.id %}
+            <br><br><br>
+            {% if program.is_published %}
+                {% if not program.is_enroll_on and not program.is_program_started %}
+                    <a href="{% url 'unpublish_program' program.id %}" style="color:white; background: blueviolet; width:30%;" class="btn">Unpublish the Program</a>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'publish_program' program.id %}" style="color:white; background: blueviolet; width:30%;" class="btn">Publish the Program</a>
+            {% endif %}
+
+            {% if program.is_enroll_on %}
+                <a href="{% url 'stop_enroll' program.id %}" style="color:white; background: blueviolet; width:30%;" class="btn">Stop Enroll</a>
+            {% else %}
+                <a href="{% url 'start_enroll' program.id %}" style="color:white; background: blueviolet; width:30%;" class="btn">Start Enroll</a>
+            {% endif %}
+
+            {% if program.is_program_started %}
+                <a href="{% url 'stop_program' program.id %}" style="color:white; background: blueviolet; width:30%;" class="btn">Stop the Program</a>
+            {% else %}
+                <a href="{% url 'start_program' program.id %}" style="color:white; background: orangered; width:30%;" class="btn">Start the Program</a>
+            {% endif %}
+
+            <a href="{% url 'archive_program' program.id %}" style="color:white; background: green; width:30%;" class="btn">Archive the Program</a>
+
+            <br><br><br>
+            {% if not program.is_program_started %}
+                <a href="{% url 'update_program' program.id %}" style="color:white; background: yellowgreen; width:30%;" class="btn">Edit Program</a>
+                <a href="{% url 'add_stuff' program.id %}" style="color:white; background: skyblue; width:30%;" class="btn">Add Trainer or Moderator</a>
+                
+                {% if not program.is_enroll_on %}
+                <br><br><br>
+                <a href="{% url 'add_feature' program.id %}" style="color:white; background: gold; width:30%;" class="btn">Add Featured Questions</a>
+                {% endif %}
+            {% endif %}
+
+
+        {% endif %}
+        
+        {% if not program.is_archived and request.user.profile.id != program.admin.id and program.is_enroll_on and not program.is_program_started %}
+            <br> <br><br>
+            {% if enroll %}
+                {% if enroll.is_approved %}
+                <p style="color:white; background: greenyellow; width:30%;" class="btn">Your request for enroll in the program has been approved! Please wait for the program to start.</p>
+                {% elif enroll.is_submited %}
+                <p style="color:black; background: gold; width:30%;" class="btn">Your request for enroll in the program is submitted for a review. Please wait.</p>    
+                {% else %}
+                <a href="{% url 'user_enroll' program.id %}" style="color:white; background: hotpink; width:30%;" class="btn">Please complete your enrollment.</a>
+                {% endif %}
+            {% else %}
+            <a href="{% url 'user_enroll' program.id %}" style="color:white; background: hotpink; width:30%;" class="btn">Enroll in the Program</a>
+            {% endif %}           
+        {% endif %}
+        
+        {% if program.is_program_started and is_my_enroll_approved %}
+            {% if my_mentor %}
+            <a href="{% url 'my_mentor' program.id %}" style="color:white; background: Gold; width:30%;" class="btn">Your Mentor</a>
+            {% endif %}
+            
+            {% if my_mentees %}
+            <a href="{% url 'my_mentees' program.id my_mentees.first.id %}" style="color:white; background: skyblue; width:30%;" class="btn">Your Mentees</a>
+            {% endif %}
+        {% endif %}
+    
+        
+        <br><br>
+        <h1>Featured Questions for Enrollment</h1>
+        {% for feature in all_feature %}
+            <div style="padding: 10px;">
+                <h2 style="color: gold">
+                {% if feature.is_personal_interest %}
+                Personal Interest
+                {% else %}
+                Main Skill
+                {% endif %}
+                </h2>
+                <h3>{{ feature.title }}</h3>
+                <p>{{ feature.description }}</p>
+                {% if not program.is_enroll_on and not program.is_archived and request.user.profile.id == program.admin.id and not program.is_program_started %}
+                    <a href="{% url 'update_feature' program.id feature.id %}" style="color:white; background: skyblue; width:30%;" class="btn">Update</a>
+                    <a href="{% url 'delete_feature' program.id feature.id %}" style="color:white; background: salmon; width:30%;" class="btn">Delete</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <br><br>
+        <h2>Trainers</h2>
+        {% for trainer in trainers %}
+            <div style="padding: 10px;">
+                <h3>{{ trainer.name }}</h3>
+                <p>{{ trainer.email }}</p>
+                <p>{{ trainer.location }}</p>
+                {% if not program.is_archived and request.user.profile.id == program.admin.id and not program.is_program_started %}
+                    <a href="{% url 'delete_trainer' program.id trainer.id %}" style="color:white; background: salmon; width:30%;" class="btn">Delete</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <br><br>
+        <h2>Moderators</h2>
+        {% for moderator in moderators %}
+            <div style="padding: 10px;">
+                <h3>{{ moderator.name }}</h3>
+                <p>{{ moderator.email }}</p>
+                <p>{{ moderator.location }}</p>
+                {% if not program.is_archived and request.user.profile.id == program.admin.id and not program.is_program_started %}
+                    <a href="{% url 'delete_moderator' program.id moderator.id %}" style="color:white; background: salmon; width:30%;" class="btn">Delete</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+
+    </div>
+{% endblock %}

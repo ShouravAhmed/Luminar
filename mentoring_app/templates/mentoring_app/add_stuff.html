@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% extends 'main.html' %}
+
+<!-- load static -->
+{% load static %}
+
+<!-- all body data -->
+{% block bodyblock %}
+
+<br /><br />
+	<div style="padding:20px">
+		<h1>Add Trainer or Moderator</h1> <br>
+
+		<div style="background-color:navy; padding: 20px; color: white;">
+			<form action="{% url 'add_stuff' program.id %}" method="get">
+				<div>
+					<label for="formInput#search" style="font-size:1.2em">Search a User: </label>
+					<input style="width: 50%; height:25px; text-align:center;" id="formInput#search" type="text" name="search_text" placeholder="Search by Users name, skill, exprience, etc." value="{{ search_text }}" />
+				</div>
+				<br>
+				<input type="submit" value="Search" class="btn" />
+			</form>
+		</div>
+		
+		<br><br>
+
+		{% for profile in profile_list %}
+		<div style="background-color:mediumpurple; padding: 20px; width:500px; margin-bottom: 10px;">
+			
+				<div>
+					<img src="{{ profile.profile_picture.url }}" alt="image" style="height:300px; width:300px;" />
+					<div>
+						<h3>{{ profile.name }}</h3>
+						<h5>{{ profile.intro|slice:"60" }}</h5>
+						<h5>{{ profile.email }}</h5>
+						<h5>{{ profile.location }}</h5>
+					</div>
+				</div>
+
+				<a href="{% url 'confirm_trainer' program.id profile.id %}" style="color:white; background: blueviolet; width:30%;" class="btn">Add as Trainer</a>
+				<a href="{% url 'confirm_moderator' program.id profile.id %}" style="color:white; background: blueviolet; width:30%;" class="btn">Add as Moderator</a>				
+
+		</div>
+		{% endfor %}
+
+	</div>
+
+{% endblock %}
